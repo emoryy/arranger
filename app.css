@@ -1,0 +1,113 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+/* line 1, app/style.less */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background: black;
+  font-family: sans-serif;
+}
+/* line 7, app/style.less */
+.wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+/* line 11, app/style.less */
+.wrap > div {
+  margin: 10px;
+  position: relative;
+  background: #222;
+  color: white;
+}
+/* line 19, app/style.less */
+h1 {
+  margin: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+/* line 25, app/style.less */
+#container {
+  flex: 1 1 auto;
+}
+/* line 27, app/style.less */
+#container > img {
+  background: #aaa;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+}
+/* line 35, app/style.less */
+#container > img:hover {
+  z-index: 2;
+  transform: scale(1.2);
+}
+/* line 41, app/style.less */
+#settings {
+  flex: 0 0 auto;
+}
+/* line 43, app/style.less */
+#settings form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+/* line 47, app/style.less */
+#settings form button {
+  margin: 5px;
+  width: 100px;
+  border: none;
+  background-color: #444;
+  color: #ddd;
+  padding: 5px;
+  cursor: pointer;
+}
+/* line 55, app/style.less */
+#settings form button:hover {
+  background-color: #666;
+}
+/* line 59, app/style.less */
+#settings form label {
+  text-transform: capitalize;
+  font-size: 12px;
+  color: #eee;
+  width: 80px;
+  display: inline-block;
+}
+/* line 67, app/style.less */
+#settings form input {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #444;
+  color: #eee;
+  background: #222;
+}
+/* line 73, app/style.less */
+#settings form input:hover {
+  border: 1px solid #555;
+  background: #333;
+}
+/* line 81, app/style.less */
+#spiral {
+  flex: 0 0 auto;
+  width: 300px;
+}
+/* line 84, app/style.less */
+#spiral > div {
+  background: #aaa;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+/* line 90, app/style.less */
+#spiral .spiral-graph {
+  width: 100%;
+  height: 100%;
+}
+
+
+/*# sourceMappingURL=app.css.map*/
