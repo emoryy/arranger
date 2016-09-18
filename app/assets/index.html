@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <link rel="stylesheet" type="text/css" href="/app.css">
+  <title>Brunch with ES6</title>
+  <script src="/vendor.js"></script>
+  <script src="/app.js"></script>
+  <script>require('initialize');</script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="settings">
+      <h1>Settings</h1>
+      <form id="options-form">
+        <div id="status">
+        </div>
+        <button type="button" id="update-button">
+          Frissítés
+        </button>
+      </form>
+    </div>
+    <div id="spiral" class="box-container">
+      <canvas id="spiral-graph" class="spiral-graph"></canvas>
+    </div>
+    <div id="container" class="box-container">
+    </div>
+  </div>
+</body>
+</html>
