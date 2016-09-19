@@ -1,7 +1,7 @@
 export default function() {
   setupProto();
 
-  const options = {
+  const defaultOptions = {
     containerId: "container",
     startPos: { x: 10, y: 10 },
     margin: 10,
@@ -10,89 +10,96 @@ export default function() {
     chord: 5.0,
     awayStep: 1.0,
     enableTries: false,
-    importanceModFunc: function(x) {
-      return x;
-    },
-    images: [
-      // { url: "6975-1.jpg", imp: 0 },
-      // { url: "6979-1.jpg", imp: 1 },
-      // { url: "6900-1.jpg", imp: 2 },
-      // { url: "6915-1.jpg", imp: 2 },
-      // { url: "6829-1.jpg", imp: 3 },
-      // { url: "6800-1.jpg", imp: 4 },
-      { url: "http://images.brickset.com/sets/images/6975-1.jpg", imp: 0 },
-      { url: "http://images.brickset.com/sets/images/6979-1.jpg", imp: 1 },
-      { url: "http://images.brickset.com/sets/images/6900-1.jpg", imp: 2 },
-      { url: "http://images.brickset.com/sets/images/6915-1.jpg", imp: 3 },
-      { url: "http://images.brickset.com/sets/images/6829-1.jpg", imp: 4 },
-      { url: "http://images.brickset.com/sets/images/6800-1.jpg", imp: 5 },
-      { url: "http://images.brickset.com/sets/images/6982-1.jpg", imp: 6 },
-      { url: "http://images.brickset.com/sets/images/6899-1.jpg", imp: 7 },
-      { url: "http://images.brickset.com/sets/images/6938-1.jpg", imp: 8 },
-      { url: "http://images.brickset.com/sets/images/6856-1.jpg", imp: 9 },
-      { url: "http://images.brickset.com/sets/images/6854-1.jpg", imp: 10 },
-      { url: "http://images.brickset.com/sets/images/6815-1.jpg", imp: 11 },
-      { url: "http://images.brickset.com/sets/images/6958-1.jpg", imp: 12 },
-      { url: "http://images.brickset.com/sets/images/6949-1.jpg", imp: 13 },
-      { url: "http://images.brickset.com/sets/images/6939-1.jpg", imp: 14 },
-      { url: "http://images.brickset.com/sets/images/6929-1.jpg", imp: 15 },
-      { url: "http://images.brickset.com/sets/images/6950-1.jpg", imp: 16 },
-      { url: "http://images.brickset.com/sets/images/6952-1.jpg", imp: 17 },
-      { url: "http://images.brickset.com/sets/images/6989-1.jpg", imp: 18 },
-      { url: "http://images.brickset.com/sets/images/6923-1.jpg", imp: 19 },
-      { url: "http://images.brickset.com/sets/images/6833-1.jpg", imp: 20 },
-      { url: "http://images.brickset.com/sets/images/6811-1.jpg", imp: 21 },
-      { url: "http://images.brickset.com/sets/images/6973-1.jpg", imp: 22 },
-      { url: "http://images.brickset.com/sets/images/6898-1.jpg", imp: 23 },
-      { url: "http://images.brickset.com/sets/images/6879-1.jpg", imp: 24 },
-      { url: "http://images.brickset.com/sets/images/6834-1.jpg", imp: 25 },
-      { url: "http://images.brickset.com/sets/images/6957-1.jpg", imp: 26 },
-    ].sortBy('imp')
+    impFn: "x",
+    imagesCSV:
+`http://images.brickset.com/sets/images/6975-1.jpg,0
+http://images.brickset.com/sets/images/6979-1.jpg,1
+http://images.brickset.com/sets/images/6900-1.jpg,2
+http://images.brickset.com/sets/images/6915-1.jpg,3
+http://images.brickset.com/sets/images/6829-1.jpg,4
+http://images.brickset.com/sets/images/6800-1.jpg,5
+http://images.brickset.com/sets/images/6982-1.jpg,6
+http://images.brickset.com/sets/images/6899-1.jpg,7
+http://images.brickset.com/sets/images/6938-1.jpg,8
+http://images.brickset.com/sets/images/6856-1.jpg,9
+http://images.brickset.com/sets/images/6854-1.jpg,10
+http://images.brickset.com/sets/images/6815-1.jpg,11
+http://images.brickset.com/sets/images/6958-1.jpg,12
+http://images.brickset.com/sets/images/6949-1.jpg,13
+http://images.brickset.com/sets/images/6939-1.jpg,14
+http://images.brickset.com/sets/images/6929-1.jpg,15
+http://images.brickset.com/sets/images/6950-1.jpg,16
+http://images.brickset.com/sets/images/6952-1.jpg,17
+http://images.brickset.com/sets/images/6989-1.jpg,18
+http://images.brickset.com/sets/images/6923-1.jpg,19
+http://images.brickset.com/sets/images/6833-1.jpg,20
+http://images.brickset.com/sets/images/6811-1.jpg,21
+http://images.brickset.com/sets/images/6973-1.jpg,22
+http://images.brickset.com/sets/images/6898-1.jpg,23
+http://images.brickset.com/sets/images/6879-1.jpg,24
+http://images.brickset.com/sets/images/6834-1.jpg,25
+http://images.brickset.com/sets/images/6957-1.jpg,26`
+  };
+
+  let options;
+  if (localStorage.arrangerOptions) {
+    try {
+      options = JSON.parse(localStorage.arrangerOptions);
+    } catch (e) {
+    }
+  } else {
+    options = JSON.parse(JSON.stringify(defaultOptions));
   }
 
 
-
   const optionMapping = [
-    { optionPath: "startPos.x" },
-    { optionPath: "startPos.y" },
-    { optionPath: "maxSize.w" },
-    { optionPath: "maxSize.h" },
-    { optionPath: "minSize.w" },
-    { optionPath: "minSize.h" },
-    { optionPath: "margin" },
-    { optionPath: "chord" },
-    { optionPath: "awayStep" },
-    { optionPath: "enableTries", type: "checkbox" },
+    { path: "startPos.x" },
+    { path: "startPos.y" },
+    { path: "maxSize.w" },
+    { path: "maxSize.h" },
+    { path: "minSize.w" },
+    { path: "minSize.h" },
+    { path: "margin" },
+    { path: "chord" },
+    { path: "awayStep" },
+    { path: "impFn", type: "text" },
+    { path: "enableTries", type: "checkbox" },
+    { path: "imagesCSV", type: "textarea" }
   ];
   function setupForm() {
     const updateButton = window.document.getElementById("update-button");
     updateButton.addEventListener('click', function() {
+      localStorage.arrangerOptions = JSON.stringify(options);
       arrange(options);
     });
     const form = document.getElementById("options-form");
+
     optionMapping.forEach(function(inputMap) {
       const row = document.createElement('div');
       const label = document.createElement('label');
-      label.innerHTML = inputMap.optionPath;
+      label.innerHTML = inputMap.path;
       row.appendChild(label);
-      const input = document.createElement('input');
+      const input = document.createElement(inputMap.type === 'textarea' ? 'textarea' : 'input');
       row.appendChild(input);
-      if (inputMap.type) {
-        input.type = inputMap.type;
+      if (inputMap.type !== "textarea") {
+        input.type = inputMap.type || 'number';
       }
+      const value = get(options, inputMap.path);
       if (inputMap.type === "checkbox") {
-        input.checked = get(options, inputMap.optionPath);
+        input.checked = value;
       } else {
-        input.value = get(options, inputMap.optionPath);
+        input.value = value;
       }
       input.addEventListener('change', function() {
         let value;
-        if (inputMap.type === "checkbox") {
+        if (inputMap.type === "textarea" || inputMap.type === "text") {
+          value = this.value;
+        } else if (inputMap.type === "checkbox") {
           value = this.checked;
         } else {
           value = parseFloat(this.value);
         }
-        set(options, inputMap.optionPath, value);
+        set(options, inputMap.path, value);
         console.log(options);
       });
       form.appendChild(row);
@@ -100,17 +107,57 @@ export default function() {
   }
   setupForm();
 
-  const statusDiv = window.document.getElementById('status');
-
+  // const statusDiv = window.document.getElementById('status');
+  let imageStore = [];
+  let imageCache = [];
+  let minImp;
+  let maxImp;
   function setupImages(options) {
-    const importances = options.images.map(function(image) {
+    const parsedImages = options.imagesCSV.split(/\r?\n/).filter(function(line) {
+      const firstChar = line[0];
+      return firstChar !== ';' && firstChar !== '#' && (firstChar !== '/' || line[1] !== '/');
+    }).map(function(line) {
+      const parts = line.split(',');
+      return {
+        url: parts[0],
+        imp: parseFloat(parts[1])
+      };
+    });
+    const newImageStore = [];
+    parsedImages.forEach(function(parsedImage) {
+      const cachedImage = imageCache.findBy('url', parsedImage.url);
+      if (cachedImage) {
+        console.log('LOAD FROM CACHE ' + parsedImage.url);
+        cachedImage.imp = parsedImage.imp;
+        newImageStore.push(cachedImage);
+      } else {
+        console.log('ADDING ' + parsedImage.url);
+        newImageStore.push(parsedImage);
+        if (!imageCache.findBy('url', parsedImage.url)) {
+          console.log('CACHING ' + parsedImage.url);
+          imageCache.push(parsedImage);
+        }
+      }
+    });
+    if (imageStore.length) {
+      imageStore.forEach(function(oldImage) {
+        if (!newImageStore.findBy('url', oldImage.url)) {
+          console.log('REMOVING ' + oldImage.url);
+          oldImage.imageElement.remove();
+        };
+      });
+    }
+    console.log('CACHE SIZE: ' + imageCache.length);
+    imageStore = newImageStore.sortBy('imp');
+
+    const importances = imageStore.map(function(image) {
       return image.imp;
     });
-    options.minImp = Math.min(...importances);
-    options.maxImp = Math.max(...importances);
+    minImp = Math.min(...importances);
+    maxImp = Math.max(...importances);
     let loadedImages = 0;
     const imagePromises = [];
-    options.images.forEach(function(image) {
+    imageStore.forEach(function(image) {
       imagePromises.push(new Promise(function(resolve, reject) {
         if (image.imageElement) {
           setupImage(image, options);
@@ -119,7 +166,7 @@ export default function() {
           image.imageElement = new Image();
           image.imageElement.src = image.url;
           image.imageElement.onload = function() {
-            statusDiv.innerHTML = ++loadedImages;
+            // statusDiv.innerHTML = ++loadedImages;
             setupImage(image, options);
             resolve();
           };
@@ -129,10 +176,13 @@ export default function() {
     return Promise.all(imagePromises);
   }
 
+  function importanceModFunc(x) {
+    return eval(options.impFn);
+  }
   function setupImage(image, options) {
     const pxWidth = image.imageElement.width;
     const pxHeight = image.imageElement.height;
-    const importanceFactor = options.importanceModFunc(1 - (image.imp - options.minImp) / options.maxImp);
+    const importanceFactor = importanceModFunc(1 - (image.imp - minImp) / maxImp);
     if (pxWidth > pxHeight) {
       const maxWidthForThis = options.minSize.w + (options.maxSize.w - options.minSize.w) * importanceFactor;
       const scaledHeightToMaxWidth = maxWidthForThis * pxHeight / pxWidth;
@@ -162,16 +212,13 @@ export default function() {
     };
     spiralShowParams = {
       elementId: "spiral",
-      centerX: arrangeParams.centerX,
-      centerY: arrangeParams.centerY,
+      centerX: 150,
+      centerY: 150,
       rotation: arrangeParams.rotation,
       chord: arrangeParams.chord,
       awayStep: arrangeParams.awayStep
     };
   }
-
-  // const thetaMax = params.coils * 2 * Math.PI;
-  //const awayStep = params.radius / thetaMax;
 
   function equiSpiral(params, func) {
     if (!params.cache) {
@@ -224,16 +271,16 @@ export default function() {
 
   function drawSpiral() {
     const spiralContainer = window.document.getElementById(spiralShowParams.elementId);
-    const canvasContainerRect = spiralContainer.getBoundingClientRect();
-    console.log("canvasContainerRect");
-    console.log(canvasContainerRect);
+    // const canvasContainerRect = spiralContainer.getBoundingClientRect();
+    // console.log("canvasContainerRect");
+    // console.log(canvasContainerRect);
     const canvas = document.getElementById('spiral-graph');
-    canvas.width = canvasContainerRect.width;
-    canvas.height = canvasContainerRect.height;
+    // canvas.width = canvasContainerRect.width;
+    // canvas.height = canvasContainerRect.height;
     const ctx = canvas.getContext('2d');
-    const canvasData = ctx.getImageData(0, 0, canvasContainerRect.width, canvasContainerRect.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const canvasData = ctx.getImageData(0, 0, 300, 300);
 
-    // That's how you define the value of a pixel //
     function drawPixel (x, y, r, g, b, a) {
       const index = (x + y * canvas.width) * 4;
       canvasData.data[index + 0] = r;
@@ -242,20 +289,17 @@ export default function() {
       canvasData.data[index + 3] = a;
     }
     equiSpiral(spiralShowParams, function(i, iInside, pos) {
-      // ctx.lineTo(pos.x, pos.y);
       drawPixel(Math.round(pos.x), Math.round(pos.y), 255, 255, 255, 255);
       return iInside <= 3000 && i < 20000;
     });
     ctx.putImageData(canvasData, 0, 0);
-    // ctx.closePath();
-    // ctx.stroke();
   }
 
   arrange(options);
 
   function arrange(options) {
     initParams(options);
-    setupImages(options).then(function() {
+    return setupImages(options).then(function() {
       drawSpiral();
       // return;
       console.time("placement");
@@ -275,7 +319,7 @@ export default function() {
       }
       let triesLog = [];
       arrangeParams.cache = null;
-      options.images.forEach(function(boxData) {
+      imageStore.forEach(function(boxData) {
         const clientRect = arrangeContainer.getBoundingClientRect();
         let tryAgain = true;
         let tries = 0;
@@ -335,34 +379,48 @@ export default function() {
       console.timeEnd("placement");
 
       console.log(triesLog);
+
+      return "fertig";
     });
   }
+
   function setupProto() {
+    if (!Array.prototype.sortBy) {
+      Array.prototype.sortBy = (function() {
+        var sorters = {
+          string: function(a, b) {
+            if (a < b) {
+              return -1;
+            } else if (a > b) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
 
-    Array.prototype.sortBy = (function() {
-      var sorters = {
-        string: function(a, b) {
-          if (a < b) {
-            return -1;
-          } else if (a > b) {
-            return 1;
-          } else {
-            return 0;
+          number: function(a, b) {
+            return a - b;
           }
-        },
+        };
 
-        number: function(a, b) {
-          return a - b;
-        }
-      };
+        return function(prop) {
+          var type = typeof this[0][prop] || 'string';
+          return this.sort(function(a, b) {
+            return sorters[type](a[prop], b[prop]);
+          });
+        };
+      }());
+    }
 
-      return function(prop) {
-        var type = typeof this[0][prop] || 'string';
-        return this.sort(function(a, b) {
-          return sorters[type](a[prop], b[prop]);
-        });
-      };
-    }());
+    if (!Array.prototype.findBy) {
+      Array.prototype.findBy = (function() {
+        return function(prop, value) {
+          return this.find(function(item) {
+            return value ? item[prop] === value : !!item[prop];
+          });
+        };
+      }());
+    }
   }
 
   function deep(obj, path, value) {
