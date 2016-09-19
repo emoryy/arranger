@@ -30,6 +30,7 @@ h1 {
 /* line 25, app/style.less */
 #container {
   flex: 1 1 auto;
+  background: #888;
 }
 /* line 27, app/style.less */
 #container > img {
