@@ -160,7 +160,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.default = function () {
   setupProto();
 
-  var options = {
+  var defaultOptions = {
     containerId: "container",
     startPos: { x: 10, y: 10 },
     margin: 10,
@@ -169,49 +169,54 @@ exports.default = function () {
     chord: 5.0,
     awayStep: 1.0,
     enableTries: false,
-    importanceModFunc: function importanceModFunc(x) {
-      return x;
-    },
-    images: [
-    // { url: "6975-1.jpg", imp: 0 },
-    // { url: "6979-1.jpg", imp: 1 },
-    // { url: "6900-1.jpg", imp: 2 },
-    // { url: "6915-1.jpg", imp: 2 },
-    // { url: "6829-1.jpg", imp: 3 },
-    // { url: "6800-1.jpg", imp: 4 },
-    { url: "http://images.brickset.com/sets/images/6975-1.jpg", imp: 0 }, { url: "http://images.brickset.com/sets/images/6979-1.jpg", imp: 1 }, { url: "http://images.brickset.com/sets/images/6900-1.jpg", imp: 2 }, { url: "http://images.brickset.com/sets/images/6915-1.jpg", imp: 3 }, { url: "http://images.brickset.com/sets/images/6829-1.jpg", imp: 4 }, { url: "http://images.brickset.com/sets/images/6800-1.jpg", imp: 5 }, { url: "http://images.brickset.com/sets/images/6982-1.jpg", imp: 6 }, { url: "http://images.brickset.com/sets/images/6899-1.jpg", imp: 7 }, { url: "http://images.brickset.com/sets/images/6938-1.jpg", imp: 8 }, { url: "http://images.brickset.com/sets/images/6856-1.jpg", imp: 9 }, { url: "http://images.brickset.com/sets/images/6854-1.jpg", imp: 10 }, { url: "http://images.brickset.com/sets/images/6815-1.jpg", imp: 11 }, { url: "http://images.brickset.com/sets/images/6958-1.jpg", imp: 12 }, { url: "http://images.brickset.com/sets/images/6949-1.jpg", imp: 13 }, { url: "http://images.brickset.com/sets/images/6939-1.jpg", imp: 14 }, { url: "http://images.brickset.com/sets/images/6929-1.jpg", imp: 15 }, { url: "http://images.brickset.com/sets/images/6950-1.jpg", imp: 16 }, { url: "http://images.brickset.com/sets/images/6952-1.jpg", imp: 17 }, { url: "http://images.brickset.com/sets/images/6989-1.jpg", imp: 18 }, { url: "http://images.brickset.com/sets/images/6923-1.jpg", imp: 19 }, { url: "http://images.brickset.com/sets/images/6833-1.jpg", imp: 20 }, { url: "http://images.brickset.com/sets/images/6811-1.jpg", imp: 21 }, { url: "http://images.brickset.com/sets/images/6973-1.jpg", imp: 22 }, { url: "http://images.brickset.com/sets/images/6898-1.jpg", imp: 23 }, { url: "http://images.brickset.com/sets/images/6879-1.jpg", imp: 24 }, { url: "http://images.brickset.com/sets/images/6834-1.jpg", imp: 25 }, { url: "http://images.brickset.com/sets/images/6957-1.jpg", imp: 26 }].sortBy('imp')
+    impFn: "x",
+    imagesCSV: "http://images.brickset.com/sets/images/6975-1.jpg,0\nhttp://images.brickset.com/sets/images/6979-1.jpg,1\nhttp://images.brickset.com/sets/images/6900-1.jpg,2\nhttp://images.brickset.com/sets/images/6915-1.jpg,3\nhttp://images.brickset.com/sets/images/6829-1.jpg,4\nhttp://images.brickset.com/sets/images/6800-1.jpg,5\nhttp://images.brickset.com/sets/images/6982-1.jpg,6\nhttp://images.brickset.com/sets/images/6899-1.jpg,7\nhttp://images.brickset.com/sets/images/6938-1.jpg,8\nhttp://images.brickset.com/sets/images/6856-1.jpg,9\nhttp://images.brickset.com/sets/images/6854-1.jpg,10\nhttp://images.brickset.com/sets/images/6815-1.jpg,11\nhttp://images.brickset.com/sets/images/6958-1.jpg,12\nhttp://images.brickset.com/sets/images/6949-1.jpg,13\nhttp://images.brickset.com/sets/images/6939-1.jpg,14\nhttp://images.brickset.com/sets/images/6929-1.jpg,15\nhttp://images.brickset.com/sets/images/6950-1.jpg,16\nhttp://images.brickset.com/sets/images/6952-1.jpg,17\nhttp://images.brickset.com/sets/images/6989-1.jpg,18\nhttp://images.brickset.com/sets/images/6923-1.jpg,19\nhttp://images.brickset.com/sets/images/6833-1.jpg,20\nhttp://images.brickset.com/sets/images/6811-1.jpg,21\nhttp://images.brickset.com/sets/images/6973-1.jpg,22\nhttp://images.brickset.com/sets/images/6898-1.jpg,23\nhttp://images.brickset.com/sets/images/6879-1.jpg,24\nhttp://images.brickset.com/sets/images/6834-1.jpg,25\nhttp://images.brickset.com/sets/images/6957-1.jpg,26"
   };
 
-  var optionMapping = [{ optionPath: "startPos.x" }, { optionPath: "startPos.y" }, { optionPath: "maxSize.w" }, { optionPath: "maxSize.h" }, { optionPath: "minSize.w" }, { optionPath: "minSize.h" }, { optionPath: "margin" }, { optionPath: "chord" }, { optionPath: "awayStep" }, { optionPath: "enableTries", type: "checkbox" }];
+  var options = void 0;
+  if (localStorage.arrangerOptions) {
+    try {
+      options = JSON.parse(localStorage.arrangerOptions);
+    } catch (e) {}
+  } else {
+    options = JSON.parse(JSON.stringify(defaultOptions));
+  }
+
+  var optionMapping = [{ path: "startPos.x" }, { path: "startPos.y" }, { path: "maxSize.w" }, { path: "maxSize.h" }, { path: "minSize.w" }, { path: "minSize.h" }, { path: "margin" }, { path: "chord" }, { path: "awayStep" }, { path: "impFn", type: "text" }, { path: "enableTries", type: "checkbox" }, { path: "imagesCSV", type: "textarea" }];
   function setupForm() {
     var updateButton = window.document.getElementById("update-button");
     updateButton.addEventListener('click', function () {
+      localStorage.arrangerOptions = JSON.stringify(options);
       arrange(options);
     });
     var form = document.getElementById("options-form");
+
     optionMapping.forEach(function (inputMap) {
       var row = document.createElement('div');
       var label = document.createElement('label');
-      label.innerHTML = inputMap.optionPath;
+      label.innerHTML = inputMap.path;
       row.appendChild(label);
-      var input = document.createElement('input');
+      var input = document.createElement(inputMap.type === 'textarea' ? 'textarea' : 'input');
       row.appendChild(input);
-      if (inputMap.type) {
-        input.type = inputMap.type;
+      if (inputMap.type !== "textarea") {
+        input.type = inputMap.type || 'number';
       }
+      var value = get(options, inputMap.path);
       if (inputMap.type === "checkbox") {
-        input.checked = get(options, inputMap.optionPath);
+        input.checked = value;
       } else {
-        input.value = get(options, inputMap.optionPath);
+        input.value = value;
       }
       input.addEventListener('change', function () {
         var value = void 0;
-        if (inputMap.type === "checkbox") {
+        if (inputMap.type === "textarea" || inputMap.type === "text") {
+          value = this.value;
+        } else if (inputMap.type === "checkbox") {
           value = this.checked;
         } else {
           value = parseFloat(this.value);
         }
-        set(options, inputMap.optionPath, value);
+        set(options, inputMap.path, value);
         console.log(options);
       });
       form.appendChild(row);
@@ -219,17 +224,57 @@ exports.default = function () {
   }
   setupForm();
 
-  var statusDiv = window.document.getElementById('status');
-
+  // const statusDiv = window.document.getElementById('status');
+  var imageStore = [];
+  var imageCache = [];
+  var minImp = void 0;
+  var maxImp = void 0;
   function setupImages(options) {
-    var importances = options.images.map(function (image) {
+    var parsedImages = options.imagesCSV.split(/\r?\n/).filter(function (line) {
+      var firstChar = line[0];
+      return firstChar !== ';' && firstChar !== '#' && (firstChar !== '/' || line[1] !== '/');
+    }).map(function (line) {
+      var parts = line.split(',');
+      return {
+        url: parts[0],
+        imp: parseFloat(parts[1])
+      };
+    });
+    var newImageStore = [];
+    parsedImages.forEach(function (parsedImage) {
+      var cachedImage = imageCache.findBy('url', parsedImage.url);
+      if (cachedImage) {
+        console.log('LOAD FROM CACHE ' + parsedImage.url);
+        cachedImage.imp = parsedImage.imp;
+        newImageStore.push(cachedImage);
+      } else {
+        console.log('ADDING ' + parsedImage.url);
+        newImageStore.push(parsedImage);
+        if (!imageCache.findBy('url', parsedImage.url)) {
+          console.log('CACHING ' + parsedImage.url);
+          imageCache.push(parsedImage);
+        }
+      }
+    });
+    if (imageStore.length) {
+      imageStore.forEach(function (oldImage) {
+        if (!newImageStore.findBy('url', oldImage.url)) {
+          console.log('REMOVING ' + oldImage.url);
+          oldImage.imageElement.remove();
+        };
+      });
+    }
+    console.log('CACHE SIZE: ' + imageCache.length);
+    imageStore = newImageStore.sortBy('imp');
+
+    var importances = imageStore.map(function (image) {
       return image.imp;
     });
-    options.minImp = Math.min.apply(Math, _toConsumableArray(importances));
-    options.maxImp = Math.max.apply(Math, _toConsumableArray(importances));
+    minImp = Math.min.apply(Math, _toConsumableArray(importances));
+    maxImp = Math.max.apply(Math, _toConsumableArray(importances));
     var loadedImages = 0;
     var imagePromises = [];
-    options.images.forEach(function (image) {
+    imageStore.forEach(function (image) {
       imagePromises.push(new Promise(function (resolve, reject) {
         if (image.imageElement) {
           setupImage(image, options);
@@ -238,7 +283,7 @@ exports.default = function () {
           image.imageElement = new Image();
           image.imageElement.src = image.url;
           image.imageElement.onload = function () {
-            statusDiv.innerHTML = ++loadedImages;
+            // statusDiv.innerHTML = ++loadedImages;
             setupImage(image, options);
             resolve();
           };
@@ -248,10 +293,13 @@ exports.default = function () {
     return Promise.all(imagePromises);
   }
 
+  function importanceModFunc(x) {
+    return eval(options.impFn);
+  }
   function setupImage(image, options) {
     var pxWidth = image.imageElement.width;
     var pxHeight = image.imageElement.height;
-    var importanceFactor = options.importanceModFunc(1 - (image.imp - options.minImp) / options.maxImp);
+    var importanceFactor = importanceModFunc(1 - (image.imp - minImp) / maxImp);
     if (pxWidth > pxHeight) {
       var maxWidthForThis = options.minSize.w + (options.maxSize.w - options.minSize.w) * importanceFactor;
       var scaledHeightToMaxWidth = maxWidthForThis * pxHeight / pxWidth;
@@ -281,16 +329,13 @@ exports.default = function () {
     };
     spiralShowParams = {
       elementId: "spiral",
-      centerX: arrangeParams.centerX,
-      centerY: arrangeParams.centerY,
+      centerX: 150,
+      centerY: 150,
       rotation: arrangeParams.rotation,
       chord: arrangeParams.chord,
       awayStep: arrangeParams.awayStep
     };
   }
-
-  // const thetaMax = params.coils * 2 * Math.PI;
-  //const awayStep = params.radius / thetaMax;
 
   function equiSpiral(params, func) {
     if (!params.cache) {
@@ -343,16 +388,16 @@ exports.default = function () {
 
   function drawSpiral() {
     var spiralContainer = window.document.getElementById(spiralShowParams.elementId);
-    var canvasContainerRect = spiralContainer.getBoundingClientRect();
-    console.log("canvasContainerRect");
-    console.log(canvasContainerRect);
+    // const canvasContainerRect = spiralContainer.getBoundingClientRect();
+    // console.log("canvasContainerRect");
+    // console.log(canvasContainerRect);
     var canvas = document.getElementById('spiral-graph');
-    canvas.width = canvasContainerRect.width;
-    canvas.height = canvasContainerRect.height;
+    // canvas.width = canvasContainerRect.width;
+    // canvas.height = canvasContainerRect.height;
     var ctx = canvas.getContext('2d');
-    var canvasData = ctx.getImageData(0, 0, canvasContainerRect.width, canvasContainerRect.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var canvasData = ctx.getImageData(0, 0, 300, 300);
 
-    // That's how you define the value of a pixel //
     function drawPixel(x, y, r, g, b, a) {
       var index = (x + y * canvas.width) * 4;
       canvasData.data[index + 0] = r;
@@ -361,20 +406,17 @@ exports.default = function () {
       canvasData.data[index + 3] = a;
     }
     equiSpiral(spiralShowParams, function (i, iInside, pos) {
-      // ctx.lineTo(pos.x, pos.y);
       drawPixel(Math.round(pos.x), Math.round(pos.y), 255, 255, 255, 255);
       return iInside <= 3000 && i < 20000;
     });
     ctx.putImageData(canvasData, 0, 0);
-    // ctx.closePath();
-    // ctx.stroke();
   }
 
   arrange(options);
 
   function arrange(options) {
     initParams(options);
-    setupImages(options).then(function () {
+    return setupImages(options).then(function () {
       drawSpiral();
       // return;
       console.time("placement");
@@ -394,7 +436,7 @@ exports.default = function () {
       }
       var triesLog = [];
       arrangeParams.cache = null;
-      options.images.forEach(function (boxData) {
+      imageStore.forEach(function (boxData) {
         var clientRect = arrangeContainer.getBoundingClientRect();
         var tryAgain = true;
         var tries = 0;
@@ -453,34 +495,48 @@ exports.default = function () {
       console.timeEnd("placement");
 
       console.log(triesLog);
+
+      return "fertig";
     });
   }
+
   function setupProto() {
+    if (!Array.prototype.sortBy) {
+      Array.prototype.sortBy = function () {
+        var sorters = {
+          string: function string(a, b) {
+            if (a < b) {
+              return -1;
+            } else if (a > b) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
 
-    Array.prototype.sortBy = function () {
-      var sorters = {
-        string: function string(a, b) {
-          if (a < b) {
-            return -1;
-          } else if (a > b) {
-            return 1;
-          } else {
-            return 0;
+          number: function number(a, b) {
+            return a - b;
           }
-        },
+        };
 
-        number: function number(a, b) {
-          return a - b;
-        }
-      };
+        return function (prop) {
+          var type = _typeof(this[0][prop]) || 'string';
+          return this.sort(function (a, b) {
+            return sorters[type](a[prop], b[prop]);
+          });
+        };
+      }();
+    }
 
-      return function (prop) {
-        var type = _typeof(this[0][prop]) || 'string';
-        return this.sort(function (a, b) {
-          return sorters[type](a[prop], b[prop]);
-        });
-      };
-    }();
+    if (!Array.prototype.findBy) {
+      Array.prototype.findBy = function () {
+        return function (prop, value) {
+          return this.find(function (item) {
+            return value ? item[prop] === value : !!item[prop];
+          });
+        };
+      }();
+    }
   }
 
   function deep(obj, path, value) {
