@@ -189,6 +189,13 @@ exports.default = function () {
       localStorage.arrangerOptions = JSON.stringify(options);
       arrange(options);
     });
+    
+    var resetButton = window.document.getElementById("reset-button");
+    resetButton.addEventListener('click', function () {
+      delete localStorage.arrangerOptions;
+      options = JSON.parse(JSON.stringify(defaultOptions)); 
+      arrange(options);
+    });
     var form = document.getElementById("options-form");
 
     optionMapping.forEach(function (inputMap) {
