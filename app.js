@@ -193,8 +193,7 @@ exports.default = function () {
     var resetButton = window.document.getElementById("reset-button");
     resetButton.addEventListener('click', function () {
       delete localStorage.arrangerOptions;
-      options = JSON.parse(JSON.stringify(defaultOptions)); 
-      arrange(options);
+      location.reload();
     });
     var form = document.getElementById("options-form");
 
