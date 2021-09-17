@@ -16,12 +16,18 @@
     <div id="settings">
       <h1>Settings</h1>
       <form id="options-form">
-        <button type="button" id="update-button">
-          Update
-        </button>
+        <div>
+          <button type="button" id="update-button"> Update </button>
+          <button type="button" id="save-button"> Save </button>
+          <button type="button" id="reset-button"> Reset </button>
+        </div>
       </form>
       <div id="spiral" class="box-container">
         <canvas id="spiral-graph" width="300" height="300" class="spiral-graph"></canvas>
+        <div class="status">
+          <div id="image-load-status"></div>
+          <div id="arrange-status"></div>
+        </div>
       </div>
     </div>
     <div id="container" class="box-container">
